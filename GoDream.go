@@ -16,6 +16,11 @@ func index(w http.ResponseWriter,r *http.Request){
 	render(w, "web/index.html", locals)
 }
 
+func about(w http.ResponseWriter,r *http.Request){
+	fmt.Println("func about")
+	render(w, "web/about.html", nil)
+}
+
 func render(w http.ResponseWriter, tmplName string, context map[string]interface{}) {
 	tmpl, err := template.ParseFiles(tmplName)
 	if err != nil {
@@ -28,6 +33,7 @@ func render(w http.ResponseWriter, tmplName string, context map[string]interface
 
 func main(){
 	http.HandleFunc("/", index)
+	http.HandleFunc("/about", about)
 
 	err:=http.ListenAndServe(":9000",nil)
 	if err!=nil{

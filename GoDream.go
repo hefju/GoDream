@@ -28,6 +28,7 @@ func render(w http.ResponseWriter, tmplName string, context map[string]interface
 		return
 	}
 	tmpl.Execute(w, context)
+	//tmpl.ExecuteTemplate(w, context)
 	return
 }
 

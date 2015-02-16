@@ -3,7 +3,7 @@ import (
 	"fmt"
 	"net/http"
 	"html/template"
-	"os"
+	//"os"
 )
 
 func index(w http.ResponseWriter,r *http.Request){
@@ -20,7 +20,7 @@ func index(w http.ResponseWriter,r *http.Request){
 func about(w http.ResponseWriter,r *http.Request){
 	//fmt.Println("func about")
 	//render(w, "web/about.html", nil)
-	t, _ := template.ParseFiles("web/about.html", "web/block.tmpl")
+	t, _ := template.ParseFiles("web/about.html", "web/tmpl/navbar.tmpl")
 	//t.Execute(os.Stdout, nil)
 	t.Execute(w, nil)
   //t.ExecuteTemplate(w,nil)
@@ -39,8 +39,13 @@ func render(w http.ResponseWriter, tmplName string, context map[string]interface
 }
 
 func main(){
+	http.Handle("/css/",http.FileServer(http.Dir("web")))
+
+	//http.Handle("/", http.StripPrefix("/template/", http.FileServer(http.Dir("/template"))))
 	http.HandleFunc("/", index)
 	http.HandleFunc("/about", about)
+
+//http.FileServer(http.Dir("web"))
 
 	err:=http.ListenAndServe(":9000",nil)
 	if err!=nil{

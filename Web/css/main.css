@@ -1,0 +1,14 @@
+
+ ul {list-style-type:none;}
+
+.pageNav nav{background-color:#00CC00; }
+.pageNav nav ul {list-style-type:none;margin:0;padding:0;overflow:hidden;}
+
+.pageNav  nav    li{float:left; }
+
+.pageNav  nav    a:link,a:visited
+      {display:block;width:120px;font-weight:bold;color:#FFFFFF;
+      background-color:#00CC00;text-align:center;padding:4px;text-decoration:none;
+      text-transform:uppercase;}
+
+.pageNav  nav    a:hover,a:active{background-color:#009900;}

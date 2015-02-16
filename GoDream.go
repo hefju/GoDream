@@ -27,7 +27,8 @@ func about(w http.ResponseWriter,r *http.Request){
 }
 
 func render(w http.ResponseWriter, tmplName string, context map[string]interface{}) {
-	tmpl, err := template.ParseFiles(tmplName)
+	//tmpl, err := template.ParseFiles(tmplName)
+	tmpl, err:= template.ParseFiles(tmplName, "web/tmpl/navbar.tmpl")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

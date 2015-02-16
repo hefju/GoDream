@@ -25,6 +25,13 @@ func about(w http.ResponseWriter,r *http.Request){
 	t.Execute(w, nil)
   //t.ExecuteTemplate(w,nil)
 }
+func setting(w http.ResponseWriter, r *http.Request) {
+	locals := make(map[string]interface{})
+	locals["userName"]="caocao"
+	render(w, "web/setting.html", locals)
+
+}
+
 
 func render(w http.ResponseWriter, tmplName string, context map[string]interface{}) {
 	//tmpl, err := template.ParseFiles(tmplName)
@@ -44,6 +51,7 @@ func main(){
 
 	//http.Handle("/", http.StripPrefix("/template/", http.FileServer(http.Dir("/template"))))
 	http.HandleFunc("/", index)
+	http.HandleFunc("/setting", setting)
 	http.HandleFunc("/about", about)
 
 //http.FileServer(http.Dir("web"))
@@ -54,3 +62,4 @@ func main(){
 	}
 	fmt.Println("cao")
 }
+

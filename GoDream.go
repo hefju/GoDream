@@ -6,6 +6,7 @@ import (
 	"html/template"
 	"net/http"
 	//"os"
+	"strconv"
 )
 
 func index(w http.ResponseWriter, r *http.Request) {
@@ -31,8 +32,26 @@ func setting(w http.ResponseWriter, r *http.Request) {
 	lst := model.GetAllSetting()
 	locals := make(map[string]interface{})
 	locals["settings"] = lst
+	locals["count"]=0
 	render(w, "web/setting.html", locals)
-
+}
+func updatesetting(w http.ResponseWriter,r *http.Request){
+	fmt.Println("func updatesetting")
+		r.ParseForm()
+		id,err:=strconv.ParseInt(r.FormValue("Id"),10,64)
+	if err!=nil{
+		fmt.Println("id not int")
+		return
+	}
+		keyname:=r.FormValue("key")
+		keyvalue:=r.FormValue("value")
+	set:=&model.Mysetting{Id:id,KeyName:keyname,KeyValue:keyvalue}
+	count:=set.Save()
+	fmt.Println(count)
+	setting(w,r)
+//		for k,v:=range r.Form{
+//			fmt.Println(k,":",v)
+//		}
 }
 
 func render(w http.ResponseWriter, tmplName string, context map[string]interface{}) {
@@ -55,6 +74,7 @@ func main() {
 	http.HandleFunc("/", index)
 	http.HandleFunc("/setting", setting)
 	http.HandleFunc("/about", about)
+	http.HandleFunc("/updatesetting", updatesetting)
 
 	//http.FileServer(http.Dir("web"))
 

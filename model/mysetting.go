@@ -7,20 +7,33 @@ import (
 	"fmt"
 )
 
-type mysetting struct {
+type Mysetting struct {
 	Id int64
 	KeyName string
 	KeyValue string
 }
 var engine *xorm.Engine
 
-func GetAllSetting() []mysetting{
-	lst:=make([]mysetting,0)
+func GetAllSetting() []Mysetting{
+	lst:=make([]Mysetting,0)
 	err:=engine.Find(&lst)
 	if err!=nil{
 		fmt.Println(err)
 	}
 	return lst
+}
+func (x *Mysetting)Save()int64{
+	var count int64
+	var err error
+	if x.Id>0{
+		count,err=engine.Id(x.Id).Update(x)
+	}else{
+		count,err=engine.Insert(x)
+	}
+	if err!=nil{
+		fmt.Println("xorm save error:",err)
+	}
+	return count
 }
 func init() {
 	var err error
@@ -31,7 +44,7 @@ func init() {
 
 	engine.ShowSQL = true
 	engine.SetMapper(core.SameMapper{})
-	err = engine.Sync(new(mysetting))
+	err = engine.Sync(new(Mysetting))
 }
 
 

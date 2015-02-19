@@ -7,19 +7,46 @@
 </head>
 <body>
 {{template "navbar" }}
-<p>从数据库中读取设置项目, 进行修改, 保存</p>
+
+<p>从数据库中读取设置项目, 进行修改, 保存.
+    <input id="btnAdd" type="button" value="新增设置" onclick="displayHide()"></p>
+<div id="pnlAdd" style="display:none;  background-color:rgb(255,0,255);">
+<form action="/addsetting" method="post" >
+    <input type="text" name="key" value="">
+    <input type="text" name="value" value="">
+    <input type="button" value="新增" onclick="javaScript:alert('您确定要删除吗？')">
+</form>
+</div>
 <ol>
     {{range .settings}}
     <li>
-        <form action="updatesetting" method="post" >
-            <p>   <input type="text" name="key" value="{{.KeyName}}">
+        <form action="/updatesetting" method="post" >
+            <p> <input type="hidden" name="Id" value="{{.Id}}">
+                <input type="text" name="key" value="{{.KeyName}}">
                 <input type="text" name="value" value="{{.KeyValue}}">
-                <input type="button" value="更新">  </p>
+                <input type="submit" value="更新">
+
+
+            </p>
         </form>
     </li>
     {{end}}
 </ol>
+<section style="font-size:8px;color:#ABABAB;">如何输出外部变量count? 这个东西不属于settings,只表示更新数据库是否成功.</section>
 
-
+<script language="javascript" type="text/javascript">
+    function displayHide()
+    {
+        var btnAdd=document.getElementById("btnAdd");
+        var pnl=document.getElementById("pnlAdd");
+        if(pnl.style.display=="none"){
+            btnAdd.value="关闭新增面板";
+            pnl.style.display="";
+        }else{
+            btnAdd.value="新增设置";
+            pnl.style.display="none";
+        }
+    }
+</script>
 </body>
 </html>

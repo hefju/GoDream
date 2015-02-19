@@ -10,10 +10,11 @@
 
 <p>从数据库中读取设置项目, 进行修改, 保存.
     <input id="btnAdd" type="button" value="新增设置" onclick="displayHide()"></p>
-<div id="pnlAdd" style="display:none;  background-color:rgb(255,0,255);">
+<div id="pnlAdd" style="display:none;  background-color:#333;width:400px;height:90px;margin:10px;padding:10px;color:#fff">
 <form action="/addsetting" method="post" >
-    <input type="text" name="key" value="">
-    <input type="text" name="value" value="">
+    添加设置<hr>
+   KeyName :  <input type="text" id="txtName" name="key" value="" style="margin:5px 0;"><br>
+   KeyValue: <input type="text" id="txtValue" name="value" value="">
     <input type="button" value="新增" onclick="javaScript:alert('您确定要删除吗？')">
 </form>
 </div>
@@ -46,6 +47,14 @@
             btnAdd.value="新增设置";
             pnl.style.display="none";
         }
+    }
+    func AddSettingCheck()
+    {
+      var txtName=document.getElementById("txtName");
+      if(trim(txtName.value=="")
+      {
+        alert('keyName 不能为空.')
+      }
     }
 </script>
 </body>

@@ -35,6 +35,13 @@ func (x *Mysetting)Save()int64{
 	}
 	return count
 }
+func (x *Mysetting)Delete()int64{
+	count,err:=engine.Id(x.Id).Delete(x)
+	if err!=nil{
+		fmt.Println("xorm save error:",err)
+	}
+	return count
+}
 func init() {
 	var err error
 	engine, err = xorm.NewEngine("sqlite3", "./test.db")
@@ -42,7 +49,7 @@ func init() {
 		fmt.Println("xorm error:", err)
 	}
 
-	engine.ShowSQL = true
+	//engine.ShowSQL = true
 	engine.SetMapper(core.SameMapper{})
 	err = engine.Sync(new(Mysetting))
 }

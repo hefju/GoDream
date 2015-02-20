@@ -10,24 +10,24 @@
 
 <p>从数据库中读取设置项目, 进行修改, 保存.
     <input id="btnAdd" type="button" value="新增设置" onclick="displayHide()"></p>
-<div id="pnlAdd" style="display:none;  background-color:#333;width:400px;height:90px;margin:10px;padding:10px;color:#fff">
-<form action="/addsetting" method="post" >
+<div id="pnlAdd" style="display:none;  background-color:#666;width:400px;height:90px;margin:10px;padding:10px;color:#fff">
+<form action="/addsetting" method="post" onsubmit="return validate_Add_Action(this)" >
     添加设置<hr>
-   KeyName :  <input type="text" id="txtName" name="key" value="" style="margin:5px 0;"><br>
-   KeyValue: <input type="text" id="txtValue" name="value" value="">
-    <input type="button" value="新增" onclick="javaScript:alert('您确定要删除吗？')">
+   KeyName :  <input type="text"  name="txtName" value="" style="margin:5px 0;"><br>
+   KeyValue: <input type="text"  name="txtValue" value="">
+    <input type="submit" value="新增" >
 </form>
 </div>
 <ol>
     {{range .settings}}
     <li>
-        <form action="/updatesetting" method="post" >
-            <p> <input type="hidden" name="Id" value="{{.Id}}">
+        <form id="frmItem{{.Id}}" method="post" >
+            <p>
+                <input type="submit" value="删除" onclick="settingDelete('{{.Id}}')">
+                <input type="hidden" name="Id" value="{{.Id}}">
                 <input type="text" name="key" value="{{.KeyName}}">
                 <input type="text" name="value" value="{{.KeyValue}}">
-                <input type="submit" value="更新">
-
-
+                <input type="submit" value="更新" onclick="settingUpdate('{{.Id}}')">
             </p>
         </form>
     </li>
@@ -36,6 +36,23 @@
 <section style="font-size:8px;color:#ABABAB;">如何输出外部变量count? 这个东西不属于settings,只表示更新数据库是否成功.</section>
 
 <script language="javascript" type="text/javascript">
+
+    //数据库条目执行更新操作, 更新操作和删除操作共用一个form的post方法, action指向不同的地址
+    function settingUpdate(id){
+        var frmName="frmItem"+id;
+        var frm= document.getElementById(frmName);
+        frm.action="/updatesetting";
+        frm.submit();
+    }
+    //数据库条目执行删除操作
+    function settingDelete(id){
+        var frmName="frmItem"+id;
+        var frm= document.getElementById(frmName);
+        frm.action="/deletesetting";
+        frm.submit();
+    }
+
+    //新增窗口采用 显示/隐藏 方式
     function displayHide()
     {
         var btnAdd=document.getElementById("btnAdd");
@@ -48,14 +65,32 @@
             pnl.style.display="none";
         }
     }
-    func AddSettingCheck()
+
+
+
+
+
+    //验证用户新增mysetting输入是否合法
+    function validate_Add_Action(thisform)
     {
-      var txtName=document.getElementById("txtName");
-      if(trim(txtName.value=="")
+    with (thisform)
       {
-        alert('keyName 不能为空.')
+      if (validate_required(txtName,"KeyName must be filled out!")==false)
+        {txtName.focus();return false}
       }
     }
+
+    //检测字段是否为空
+    function validate_required(field,alerttxt)
+    {
+        with (field)
+        {
+            if (value==null||value=="")
+            {alert(alerttxt);return false}
+            else {return true}
+        }
+    }
+
 </script>
 </body>
 </html>

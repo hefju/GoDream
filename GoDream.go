@@ -10,13 +10,11 @@ import (
 )
 
 func index(w http.ResponseWriter, r *http.Request) {
-	//	r.ParseForm()
-	//	for k,v:=range r.Form{
-	//		fmt.Println(k,":",v)
-	//	}
-
+	lst := model.GetAllUpdateLog()
 	locals := make(map[string]interface{})
-	locals["userName"] = "caocao"
+	locals["UpdateLog"] = lst
+	locals["count"]=0
+
 	render(w, "web/index.html", locals)
 }
 
@@ -80,7 +78,17 @@ func deleteSetting(w http.ResponseWriter,r *http.Request) {
 	fmt.Println(count)
 	setting(w,r)
 }
+func addUpdateLog(w http.ResponseWriter,r *http.Request){
+	r.ParseForm()
 
+	info:=new(model.UpdateLog)
+	info.Title=r.FormValue("txtTitle")
+	info.Content=r.FormValue("txtContent")
+
+	count:=info.Save()
+	fmt.Println(count)
+	index(w,r)
+}
 func render(w http.ResponseWriter, tmplName string, context map[string]interface{}) {
 	//tmpl, err := template.ParseFiles(tmplName)
 	tmpl, err := template.ParseFiles(tmplName, "web/tmpl/navbar.tmpl")
@@ -105,6 +113,8 @@ func main() {
 	http.HandleFunc("/updatesetting", updatesetting)
 	http.HandleFunc("/addsetting", addsetting)
 	http.HandleFunc("/deletesetting", deleteSetting)
+	http.HandleFunc("/addUpdateLog", addUpdateLog)
+
 
 	//http.FileServer(http.Dir("web"))
 

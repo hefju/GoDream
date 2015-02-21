@@ -12,32 +12,41 @@
 
 
 <h1>欢迎来到hefju的golang学习日记</h1>
+<input id="btnAdd" type="button" value="新增日记" onclick="displayHide()"></p>
+<div id="pnlAdd" style="display:none;  background-color:#666;width:280px;min-height: 180px;margin:10px;padding:10px;color:#fff">
+    <form action="/addUpdateLog" method="post" onsubmit="return validate_Add_Action(this)" >
+        添加日记<hr>
+        Title : <br> <input type="text"  name="txtTitle" value="" style="margin:5px 0;"><br>
+        Content:<br> <textarea cols="30" rows="2" name="txtContent"></textarea><br>
 
-            <!--<ul>-->
-                <!--<li><h3>2015-2-14</h3></li>-->
-                <!--<li> <p>项目建立,目前把学习的过程都写在html上面, 以后可能会写在数据库, 访问时从数据库读取数据,显示到页面上. </p></li>-->
-            <!--</ul>-->
-
-             <ul>
-                 <li><h3>2015-2-20(年初二)</h3></li>
-                 <li> <p>在setting.html页面上增加js, 用于检查输入框是否为空.<br>
-                         实现了在同一个form上面执行多个submit方法. 学会js函数传入参数.<br>
-                         学会用js来检测输入框是否为空.
-                 </p></li>
-                 <li><h3>2015-2-19(春节)</h3></li>
-                 <li> <p>将setting.html上的数据更新回sqlite, 但是无法显示是否更新成功.</p></li>
-                 <li><h3>2015-2-18</h3></li>
-                 <li> <p> 将sqlite的数据显示在setting.html上</p></li>
-                 <li><h3>2015-2-17</h3></li>
-                 <li> <p>添加了xorm功能, 生成sqlite数据.</p></li>
-                 <li><h3>2015-2-16</h3></li>
-                 <li> <p>终于可以成功使用golang的模板来做header. 也能够调用css文件了.</p></li>
-                 <li><h3>2015-2-15</h3></li>
-                 <li> <p>尝试使用golang的模板来做header, footer. 搞不清楚Execute和ExecuteTemplate的区别</p></li>
-                 <li><h3>2015-2-14</h3></li>
-                 <li> <p>项目建立,目前把学习的过程都写在html上面, 以后可能会写在数据库, 访问时从数据库读取数据,显示到页面上. </p></li>
-             </ul>
+        <input type="submit" value="新增" >
+    </form>
+</div>
 
 
+<ol>
+    {{range .UpdateLog}}
+    <li><h3>{{.Title}}</h3>
+    <p>{{.Content}}
+    </p></li>
+    {{end}}
+
+</ol>
+
+<script language="javascript" type="text/javascript">
+    //新增窗口采用 显示/隐藏 方式
+    function displayHide()
+    {
+        var btnAdd=document.getElementById("btnAdd");
+        var pnl=document.getElementById("pnlAdd");
+        if(pnl.style.display=="none"){
+            btnAdd.value="关闭新增面板";
+            pnl.style.display="";
+        }else{
+            btnAdd.value="新增日记";
+            pnl.style.display="none";
+        }
+    }
+</script>
 </body>
 </html>

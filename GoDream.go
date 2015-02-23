@@ -9,6 +9,33 @@ import (
 	"strconv"
 )
 
+
+func main() {
+	http.Handle("/css/", http.FileServer(http.Dir("web")))
+	http.Handle("/imgs/", http.FileServer(http.Dir("web")))
+
+	//http.Handle("/", http.StripPrefix("/template/", http.FileServer(http.Dir("/template"))))
+	http.HandleFunc("/", index)
+	http.HandleFunc("/setting", setting)
+	http.HandleFunc("/about", about)
+	http.HandleFunc("/updatesetting", updatesetting)
+	http.HandleFunc("/addsetting", addsetting)
+	http.HandleFunc("/deletesetting", deleteSetting)
+	http.HandleFunc("/addUpdateLog", addUpdateLog)
+	http.HandleFunc("/task",task)
+
+	err := http.ListenAndServe(":9000", nil)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println("cao")
+}
+
+func task(w http.ResponseWriter, r *http.Request) {
+	render(w, "web/task.html", nil)
+}
+
+
 func index(w http.ResponseWriter, r *http.Request) {
 	lst := model.GetAllUpdateLog()
 	locals := make(map[string]interface{})
@@ -102,25 +129,3 @@ func render(w http.ResponseWriter, tmplName string, context map[string]interface
 	return
 }
 
-func main() {
-	http.Handle("/css/", http.FileServer(http.Dir("web")))
-	http.Handle("/imgs/", http.FileServer(http.Dir("web")))
-
-	//http.Handle("/", http.StripPrefix("/template/", http.FileServer(http.Dir("/template"))))
-	http.HandleFunc("/", index)
-	http.HandleFunc("/setting", setting)
-	http.HandleFunc("/about", about)
-	http.HandleFunc("/updatesetting", updatesetting)
-	http.HandleFunc("/addsetting", addsetting)
-	http.HandleFunc("/deletesetting", deleteSetting)
-	http.HandleFunc("/addUpdateLog", addUpdateLog)
-
-
-	//http.FileServer(http.Dir("web"))
-
-	err := http.ListenAndServe(":9000", nil)
-	if err != nil {
-		fmt.Println(err)
-	}
-	fmt.Println("cao")
-}

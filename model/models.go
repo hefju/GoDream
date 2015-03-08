@@ -17,13 +17,22 @@ func init() {
 		fmt.Println("xorm error:", err)
 	}
 
-	engine.ShowSQL = true
+	//engine.ShowSQL = true
 	engine.SetMapper(core.SameMapper{})
-	err = engine.Sync(new(Mysetting), new(UpdateLog)) //
+	err = engine.Sync(new(Mysetting), new(UpdateLog),new(ReportMsg)) //
 	if err != nil {
 		fmt.Println("xorm error333:", err)
 	}
 }
+
+type ReportMsg struct {
+    Id int64
+    Title string
+    Content string
+    CreatedAt time.Time `xorm:"created"`
+}
+
+
 
 //我的设置(数据库)
 type Mysetting struct {
@@ -109,4 +118,9 @@ type MyTask struct {
 	Finish   bool
 	Created  time.Time `xorm:"created"`
 	FinishAt time.Time
+}
+
+func Insert(obj interface{}) error {
+    _,err:=engine.InsertOne(obj)
+    return err
 }

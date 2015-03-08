@@ -2,11 +2,14 @@ package main
 
 import (
 	"fmt"
-	"godream/model"
+	"github.com/hefju/GoDream/model"
 	"html/template"
 	"net/http"
-	//"os"
 	"strconv"
+    "encoding/json"
+    "os"
+//    "io/ioutil"
+    "log"
 )
 
 
@@ -23,12 +26,36 @@ func main() {
 	http.HandleFunc("/deletesetting", deleteSetting)
 	http.HandleFunc("/addUpdateLog", addUpdateLog)
 	http.HandleFunc("/task",task)
+    http.HandleFunc("/msg",message)
 
-	err := http.ListenAndServe(":9000", nil)
+    addr:=GetDefaultListenInfo()
+	err := http.ListenAndServe(addr, nil)//":9000"
 	if err != nil {
 		fmt.Println(err)
 	}
 	fmt.Println("cao")
+}
+
+//接收来自客户的信息
+func message(w http.ResponseWriter, r *http.Request) {
+    if r.Method=="POST"{
+        decoder := json.NewDecoder(r.Body)
+        var msg  model.ReportMsg
+        err := decoder.Decode(&msg)
+        if err != nil {
+            log.Println(err)  // panic()
+        }
+        model.Insert(msg)
+     fmt.Println(msg)
+
+
+//        body, _ := ioutil.ReadAll(r.Body)
+//        fmt.Println(string(body))
+        fmt.Fprintln(w,"200")
+
+    }else{
+        fmt.Fprintln(w,"server receive a message.")
+    }
 }
 
 func task(w http.ResponseWriter, r *http.Request) {
@@ -127,5 +154,17 @@ func render(w http.ResponseWriter, tmplName string, context map[string]interface
 	tmpl.Execute(w, context)
 	//tmpl.ExecuteTemplate(w, context)
 	return
+}
+
+func GetDefaultListenInfo() string {
+    host := os.Getenv("HOST")
+    if len(host) == 0 {
+        host = "0.0.0.0"
+    }
+    port := os.Getenv("PORT")
+    if port == "" {
+        port = "9000"
+    }
+    return host + ":" + port
 }
 

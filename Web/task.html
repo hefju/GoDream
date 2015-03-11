@@ -2,13 +2,47 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
+
     <link rel="stylesheet" type="text/css" href="/css/main.css">
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.css">
     <title>我的任务</title>
 </head>
 <body>
 {{template "navbar" }}
-<h1>任务管理器</h1>
-<p>这是我的任务管理工具，目前我还未能确定这个要实现些什么样的功能。</p>
+<div class="page-header">
+    <h1>拖延症
+        <small>你可以调整期望，把遥远的目标分解成为简单的，必定可以完成，又可以靠近最终目标的目标。</small>
+    </h1>
+</div>
+
+<div class="alert alert-warning" role="alert">这是我的任务管理工具，目前我还未能确定这个要实现些什么样的功能。</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+
+          <h1>2015.3.11</h1>
+
+            <table class="table table-hover">
+
+                <tr> <td><a>Home </a></td></tr>
+                <tr> <td><a>SVN</a></td></tr>
+                <tr> <td><a>iOS</a></td></tr>
+                <tr> <td><a>VB.Net </a></td></tr>
+                <tr> <td><a>Java</a> </td></tr>
+                <tr> <td><a>PHP </a></td></tr>
+                <tr><td>
+                    <input type="text" class="form-control" id="exampleInputName2" placeholder="添加任务">
+                </td></tr>
+            </table>
+        </div>
+        <div class="col-md-4 alert alert-warning">
+        </div>
+
+
+    </div>
+</div>
+
 
 </body>
 </html>

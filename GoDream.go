@@ -14,6 +14,7 @@ import (
 
 
 func main() {
+    http.Handle("/js/", http.FileServer(http.Dir("web")))
 	http.Handle("/css/", http.FileServer(http.Dir("web")))
 	http.Handle("/imgs/", http.FileServer(http.Dir("web")))
 

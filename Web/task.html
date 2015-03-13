@@ -30,22 +30,17 @@
     <div class="row">
         <div class="col-md-4">
 
-          <h1>2015.3.11</h1>
-
-
-
+          <h1>2015.3.11<label id="lblID"></label></h1>
 
             <table class="table table-condensed" id="table">
-                <tr><td class="jhide">1</td> <td>Home     </td></tr>
-                <tr><td class="jhide">2</td> <td>SVN      </td></tr>
-                <tr><td class="jhide">3</td> <td>iOS      </td></tr>
-                <tr><td class="jhide">4</td> <td>VB.Net   </td></tr>
-                <tr><td class="jhide">5</td> <td>Java     </td></tr>
-                <tr><td class="jhide">6</td> <td>PHP      </td></tr>
+                {{range .mytasks}}
+                <tr><td class="jhide">{{.Id}}</td> <td>{{.Title}}    </td></tr>
+                {{end}}
+
                 <tr><td class="jhide">0</td> <td>
-                    <form action="" method="post">
-                        <textarea rows="1" cols="40" name="user" placeholder="添加任务"  ></textarea>
-                        <input type="submit" value="添加" style="margin-top: -10px;" />
+                    <form action="/addtask" method="post">
+                        <textarea rows="2" cols="40" name="txtInputTask" placeholder="添加任务"  ></textarea>
+                        <input type="submit" value="添加" style="margin-top: 0px;" />
                     </form>
 
                 </td></tr>
@@ -66,6 +61,7 @@ $("#table tr").click(function(){
   if(value>0){
    $(this).addClass('selected').siblings().removeClass('selected');
  }
+ $("#lblID").text(value)
    //alert(value);
 });
 </script>

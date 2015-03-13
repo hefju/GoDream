@@ -27,6 +27,7 @@ func main() {
 	http.HandleFunc("/deletesetting", deleteSetting)
 	http.HandleFunc("/addUpdateLog", addUpdateLog)
 	http.HandleFunc("/task",task)
+    http.HandleFunc("/addtask",addtask)
     http.HandleFunc("/msg",message)
 
     addr:=GetDefaultListenInfo()
@@ -60,7 +61,22 @@ func message(w http.ResponseWriter, r *http.Request) {
 }
 
 func task(w http.ResponseWriter, r *http.Request) {
-	render(w, "web/task.html", nil)
+    date:=""
+    lst := model.GetTask(date)
+    locals := make(map[string]interface{})
+    locals["mytasks"] = lst
+	render(w, "web/task.html", locals)
+}
+//添加任务
+func addtask(w http.ResponseWriter, r *http.Request) {
+    r.ParseForm()
+    id,_:=strconv.ParseInt("0",10,64)
+    newtask:=r.FormValue("txtInputTask")
+    fmt.Println("func addtask: ",newtask)
+    t:=&model.MyTask{Id:id,Title:newtask}
+   affect,_:= model.Insert(t)
+    fmt.Println(affect)
+    task(w,r)
 }
 
 

@@ -19,7 +19,7 @@ func init() {
 
 	//engine.ShowSQL = true
 	engine.SetMapper(core.SameMapper{})
-	err = engine.Sync(new(Mysetting), new(UpdateLog),new(ReportMsg)) //
+	err = engine.Sync(new(Mysetting), new(UpdateLog),new(ReportMsg),new(MyTask)) //
 	if err != nil {
 		fmt.Println("xorm error333:", err)
 	}
@@ -119,8 +119,16 @@ type MyTask struct {
 	Created  time.Time `xorm:"created"`
 	FinishAt time.Time
 }
+func GetTask(date string) []MyTask {
+    lst := make([]MyTask, 0)
+    err := engine.Find(&lst)
+    if err != nil {
+        fmt.Println(err)
+    }
+    return lst
+}
 
-func Insert(obj interface{}) error {
-    _,err:=engine.InsertOne(obj)
-    return err
+func Insert(obj interface{}) (int64, error)  {
+    affect,err:=engine.InsertOne(obj)
+    return affect,err
 }

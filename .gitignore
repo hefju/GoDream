@@ -2,3 +2,6 @@
 /hotConf.json
 
 /.idea
+/*.db
+/*.iml
+/.idea

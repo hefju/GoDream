@@ -5,7 +5,16 @@
 
     <link rel="stylesheet" type="text/css" href="/css/main.css">
     <link rel="stylesheet" type="text/css" href="/css/bootstrap.css">
-    <script src="http://localhost:9000/js/jquery-2.1.3.js"></script>
+    <script src="/js/jquery-2.1.3.js"></script>
+    <style>
+        .selected {
+        background-color: brown;
+        color: #FFF;
+        }
+        .jhide{
+        display:none;
+        }
+    </style>
     <title>我的任务</title>
 </head>
 <body>
@@ -16,7 +25,6 @@
     </h1>
 </div>
 
-<div class="alert alert-warning" role="alert">这是我的任务管理工具，目前我还未能确定这个要实现些什么样的功能。</div>
 
 <div class="container">
     <div class="row">
@@ -24,18 +32,25 @@
 
           <h1>2015.3.11</h1>
 
-            <table class="table table-hover" id="table">
 
-                <tr> <td><a>Home </a></td></tr>
-                <tr> <td><a>SVN</a></td></tr>
-                <tr> <td><a>iOS</a></td></tr>
-                <tr> <td><a>VB.Net </a></td></tr>
-                <tr> <td><a>Java</a> </td></tr>
-                <tr> <td><a>PHP </a></td></tr>
-                <tr><td>
-                    <input type="text" class="form-control" id="exampleInputName2" placeholder="添加任务">
+
+
+            <table class="table table-condensed" id="table">
+                <tr><td class="jhide">1</td> <td>Home     </td></tr>
+                <tr><td class="jhide">2</td> <td>SVN      </td></tr>
+                <tr><td class="jhide">3</td> <td>iOS      </td></tr>
+                <tr><td class="jhide">4</td> <td>VB.Net   </td></tr>
+                <tr><td class="jhide">5</td> <td>Java     </td></tr>
+                <tr><td class="jhide">6</td> <td>PHP      </td></tr>
+                <tr><td class="jhide">0</td> <td>
+                    <form action="" method="post">
+                        <textarea rows="1" cols="40" name="user" placeholder="添加任务"  ></textarea>
+                        <input type="submit" value="添加" style="margin-top: -10px;" />
+                    </form>
+
                 </td></tr>
             </table>
+
         </div>
         <div class="col-md-4 alert alert-warning">
         </div>
@@ -43,26 +58,16 @@
 
     </div>
 </div>
-
+<div class="alert alert-success" role="alert">这是我的任务管理工具，目前我还未能确定这个要实现些什么样的功能。</div>
+<div class="alert alert-info" role="alert">这是我的任务管理工具，目前我还未能确定这个要实现些什么样的功能。</div>
 <script>
-var table = document.getElementById('table'),
-    selected = table.getElementsByClassName('selected');
-table.onclick = highlight;
-function highlight(e) {
-    if (selected[0]) selected[0].className = '';
-    e.target.parentNode.className = 'selected';
-    //   alert("cao");
-
-    var $row=$(this).parent().find('td');
-    var clickeedID=$row.eq(0).text();
-    alert(clickeedID);
-
-}
-function fnselect(){
-var $row=$(this).parent().find('td');
-    var clickeedID=$row.eq(0).text();
-    alert(clickeedID);
-}
+$("#table tr").click(function(){
+  var value=$(this).find('td:first').html();
+  if(value>0){
+   $(this).addClass('selected').siblings().removeClass('selected');
+ }
+   //alert(value);
+});
 </script>
 </body>
 </html>

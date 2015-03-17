@@ -127,6 +127,14 @@ func GetTask(date string) []MyTask {
     }
     return lst
 }
+func GetTaskByID(id int64) *MyTask {
+    t:=MyTask{Id:id}
+    err := engine.Find(t)
+    if err != nil {
+        fmt.Println(err)
+    }
+    return &t
+}
 
 func Insert(obj interface{}) (int64, error)  {
     affect,err:=engine.InsertOne(obj)

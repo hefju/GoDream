@@ -28,7 +28,9 @@ func main() {
 	http.HandleFunc("/addUpdateLog", addUpdateLog)
 	http.HandleFunc("/task",task)
     http.HandleFunc("/addtask",addtask)
+    http.HandleFunc("/gettask/{key}",gettask)
     http.HandleFunc("/msg",message)
+    http.HandleFunc("/test",test)
 
     addr:=GetDefaultListenInfo()
 	err := http.ListenAndServe(addr, nil)//":9000"
@@ -38,6 +40,9 @@ func main() {
 	fmt.Println("cao")
 }
 
+func test(w http.ResponseWriter, r *http.Request) {
+    render(w, "web/test.html", nil)
+}
 //接收来自客户的信息
 func message(w http.ResponseWriter, r *http.Request) {
     if r.Method=="POST"{
@@ -66,6 +71,26 @@ func task(w http.ResponseWriter, r *http.Request) {
     locals := make(map[string]interface{})
     locals["mytasks"] = lst
 	render(w, "web/task.html", locals)
+}
+func gettask(w http.ResponseWriter, r *http.Request) {
+    r.ParseForm()
+
+    strID:= r.FormValue("name1")
+    id,err:=strconv.ParseInt(strID,10,64)
+    if err!=nil{
+        fmt.Println(err)
+        return
+    }
+    fmt.Println("func gettask: ",strID)
+    t:=model.GetTaskByID(id)
+    js, err := json.Marshal(t)
+    if err != nil {
+        http.Error(w, err.Error(), http.StatusInternalServerError)
+        return
+    }
+    fmt.Println(t)
+    w.Header().Set("Content-Type", "application/json")
+    w.Write(js)
 }
 //添加任务
 func addtask(w http.ResponseWriter, r *http.Request) {

@@ -28,7 +28,7 @@ func main() {
 	http.HandleFunc("/addUpdateLog", addUpdateLog)
 	http.HandleFunc("/task",task)
     http.HandleFunc("/addtask",addtask)
-    http.HandleFunc("/gettask/{key}",gettask)
+    http.HandleFunc("/gettask",gettask)
     http.HandleFunc("/msg",message)
     http.HandleFunc("/test",test)
 
@@ -43,29 +43,9 @@ func main() {
 func test(w http.ResponseWriter, r *http.Request) {
     render(w, "web/test.html", nil)
 }
-//接收来自客户的信息
-func message(w http.ResponseWriter, r *http.Request) {
-    if r.Method=="POST"{
-        decoder := json.NewDecoder(r.Body)
-        var msg  model.ReportMsg
-        err := decoder.Decode(&msg)
-        if err != nil {
-            log.Println(err)  // panic()
-        }
-        model.Insert(msg)
-     fmt.Println(msg)
-
-
-//        body, _ := ioutil.ReadAll(r.Body)
-//        fmt.Println(string(body))
-        fmt.Fprintln(w,"200")
-
-    }else{
-        fmt.Fprintln(w,"server receive a message.")
-    }
-}
 
 func task(w http.ResponseWriter, r *http.Request) {
+    fmt.Println("func task: ")
     date:=""
     lst := model.GetTask(date)
     locals := make(map[string]interface{})
@@ -74,14 +54,13 @@ func task(w http.ResponseWriter, r *http.Request) {
 }
 func gettask(w http.ResponseWriter, r *http.Request) {
     r.ParseForm()
-
     strID:= r.FormValue("name1")
     id,err:=strconv.ParseInt(strID,10,64)
     if err!=nil{
         fmt.Println(err)
         return
     }
-    fmt.Println("func gettask: ",strID)
+    //fmt.Println("func gettask: ",strID)
     t:=model.GetTaskByID(id)
     js, err := json.Marshal(t)
     if err != nil {
@@ -184,6 +163,26 @@ func addUpdateLog(w http.ResponseWriter,r *http.Request){
 	count:=info.Save()
 	fmt.Println(count)
 	index(w,r)
+}
+
+//接收来自客户的信息
+func message(w http.ResponseWriter, r *http.Request) {
+    if r.Method=="POST"{
+        decoder := json.NewDecoder(r.Body)
+        var msg  model.ReportMsg
+        err := decoder.Decode(&msg)
+        if err != nil {
+            log.Println(err)  // panic()
+        }
+        model.Insert(msg)
+        fmt.Println(msg)
+        //        body, _ := ioutil.ReadAll(r.Body)
+        //        fmt.Println(string(body))
+        fmt.Fprintln(w,"200")
+
+    }else{
+        fmt.Fprintln(w,"server receive a message.")
+    }
 }
 func render(w http.ResponseWriter, tmplName string, context map[string]interface{}) {
 	//tmpl, err := template.ParseFiles(tmplName)

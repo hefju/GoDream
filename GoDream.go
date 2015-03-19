@@ -29,6 +29,8 @@ func main() {
 	http.HandleFunc("/task",task)
     http.HandleFunc("/addtask",addtask)
     http.HandleFunc("/gettask",gettask)
+    http.HandleFunc("/updateTask",updateTask)
+
     http.HandleFunc("/msg",message)
     http.HandleFunc("/test",test)
 
@@ -51,6 +53,37 @@ func task(w http.ResponseWriter, r *http.Request) {
     locals := make(map[string]interface{})
     locals["mytasks"] = lst
 	render(w, "web/task.html", locals)
+}
+func updateTask(w http.ResponseWriter, r *http.Request) {
+    r.ParseForm()
+    fmt.Println("func updateTask: ")
+    id,err:=strconv.ParseInt(r.FormValue("txtID"),10,64)
+    if err!=nil{
+        fmt.Println(err)
+    }
+
+    t:=new(model.MyTask)
+    t.Id=id
+    t.Title=r.FormValue("txtTitle")
+    t.Content=r.FormValue("txtContent")
+    fmt.Println(t,id)
+    var result string
+    _,err=model.UpdateTask(t)
+    if err!=nil{
+        fmt.Println(err)
+        result="执行失败."
+
+    }else{
+        result="执行成功."
+    }
+fmt.Println(result)
+    js, err := json.Marshal(result)
+    if err != nil {
+        http.Error(w, err.Error(), http.StatusInternalServerError)
+        return
+    }
+    w.Header().Set("Content-Type", "application/json")
+    w.Write(js)
 }
 func gettask(w http.ResponseWriter, r *http.Request) {
     r.ParseForm()

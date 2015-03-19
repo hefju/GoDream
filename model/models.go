@@ -136,6 +136,10 @@ func GetTaskByID(id int64) *MyTask {
     return t
 }
 
+func UpdateTask(task *MyTask )(int64, error) {
+    affect,err:= engine.Id(task.Id).Update(task)
+    return affect,err
+}
 func Insert(obj interface{}) (int64, error)  {
     affect,err:=engine.InsertOne(obj)
     return affect,err

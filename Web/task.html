@@ -47,13 +47,27 @@
             </table>
 
         </div>
-        <div class="col-md-4 alert alert-warning">
+        <div class="col-md-8 alert alert-warning">
+            <span class="label label-default">undone</span>
+            <span class="label label-success">Done</span>
+            <span class="label label-warning">Done</span>
+
+
+            <form action="/updateTask" method="post">
+                <input type="text" id="txtID" name="txtID" style="display:none;"/><br>
+                <input type="text" id="txtTitle" name="txtTitle" style="width:90%"/> <br>       <br>
+
+            <textarea  id="txtContent" name="txtContent" cols="30" rows="15" style=" width:100%;"></textarea><br>
+                <input type="submit" value="保存" id="btnSave" style="width:100px;" class="btn btn-success" />
+
+            </form>
         </div>
 
 
     </div>
+
 </div>
-<div class="alert alert-success" role="alert">这是我的任务管理工具，目前我还未能确定这个要实现些什么样的功能。</div>
+<div class="alert alert-success" role="alert">   <span id="myDiv">Let AJAX change this text</span></div>
 <div class="alert alert-info" role="alert">这是我的任务管理工具，目前我还未能确定这个要实现些什么样的功能。</div>
 <script>
 $("#table tr").click(function(){
@@ -61,9 +75,23 @@ $("#table tr").click(function(){
   if(value>0){
    $(this).addClass('selected').siblings().removeClass('selected');
  }
- $("#lblID").text(value)
-   //alert(value);
+ $("#lblID").text(value);
+
+     //htmlobj=$.ajax({url:"/gettask?name1="+value,async:false});
+    //$("#myDiv").html(htmlobj.responseText);
+ $.getJSON("/gettask?name1="+value,function(json){
+
+      $("#txtID").val(json.Id);
+        $("#txtTitle").val(json.Title);
+         $("#txtContent").val(json.Content);
+        $("#myDiv").html(JSON.stringify(json));
+
+
+   });
+
 });
+
+
 </script>
 </body>
 </html>

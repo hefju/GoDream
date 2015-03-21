@@ -80,14 +80,15 @@
 <script>
 //选择一个任务
 $("#table tr").click(function(){
+    //增加选中效果
     var value=$(this).find('td:first').html();
+     $("#lblID").text(value);
     if(value>0){
         $(this).addClass('selected').siblings().removeClass('selected');
+    }else{
+       return;//如果是点击新增任务的输入框那一行就
     }
 
-    $("#lblID").text(value);
-    //htmlobj=$.ajax({url:"/gettask?name1="+value,async:false});
-    //$("#myDiv").html(htmlobj.responseText);
     //ajax
     $.getJSON("/gettask?name1="+value,function(json){
     $("#txtID").val(json.Id);
